@@ -5,7 +5,6 @@ class TarjetaCredito:
 
     @staticmethod
     def validar_tarjeta(numero):
-        """Valida el número de tarjeta usando el algoritmo de Luhn."""
         numero = list(numero)
         numero.reverse()
         digitos = [int(d) for d in numero]
@@ -24,11 +23,9 @@ class TarjetaCredito:
             return False
 
     def consultar_saldo_pendiente(self):
-        """Retorna el saldo pendiente de la tarjeta."""
         return self.saldo_pendiente
 
     def pagar(self, cantidad):
-        """Reduce el saldo pendiente de la tarjeta si la cantidad es válida."""
         if cantidad > 0 and cantidad <= self.saldo_pendiente:
             self.saldo_pendiente -= cantidad
             print(f"Pago realizado. Nuevo saldo pendiente: {self.saldo_pendiente}")
@@ -43,7 +40,6 @@ class CuentaBancaria:
         self.tarjeta = TarjetaCredito(numero_tarjeta)
 
     def depositar(self, cantidad):
-        """Deposita dinero en la cuenta si la tarjeta asociada es válida."""
         if self.tarjeta.validar_tarjeta(self.tarjeta.numero_tarjeta):
             if cantidad > 0:
                 self.__saldo += cantidad
@@ -54,7 +50,6 @@ class CuentaBancaria:
             print("Número de tarjeta inválido. Operación cancelada.")
 
     def retirar(self, cantidad):
-        """Retira dinero de la cuenta si hay suficiente saldo y la tarjeta es válida."""
         if self.tarjeta.validar_tarjeta(self.tarjeta.numero_tarjeta):
             if cantidad > 0 and cantidad <= self.__saldo:
                 self.__saldo -= cantidad
@@ -65,15 +60,12 @@ class CuentaBancaria:
             print("Número de tarjeta inválido. Operación cancelada.")
 
     def consultar_saldo(self):
-        """Retorna el saldo actual de la cuenta."""
         return self.__saldo
 
     def consultar_titular(self):
-        """Retorna el nombre del titular de la cuenta."""
         return self.__titular
 
     def realizar_pago_tarjeta(self, cantidad):
-        """Transfiere dinero desde la cuenta al saldo pendiente de la tarjeta."""
         if self.tarjeta.validar_tarjeta(self.tarjeta.numero_tarjeta):
             if cantidad > 0 and cantidad <= self.__saldo:
                 self.__saldo -= cantidad
@@ -85,21 +77,21 @@ class CuentaBancaria:
             print("Número de tarjeta inválido. Operación cancelada.")
 
 
-# Ejemplo de uso
+# Ejemplo
 if __name__ == "__main__":
-    # Crear una cuenta bancaria con un titular, número de tarjeta válido y saldo inicial
+    # Tarjeta valida
     cuenta = CuentaBancaria("Juan Pérez", "4532015112830366", 1000)
-    cuenta.tarjeta.saldo_pendiente = 500  # Configurar saldo pendiente inicial
+    cuenta.tarjeta.saldo_pendiente = 500 
 
-    # Consultar saldos
+    # Saldos
     print(f"Saldo en cuenta: {cuenta.consultar_saldo()}")
     print(f"Saldo pendiente en tarjeta: {cuenta.tarjeta.consultar_saldo_pendiente()}")
 
-    # Realizar operaciones
+    # Operaciones
     cuenta.depositar(200)
     cuenta.retirar(100)
     cuenta.realizar_pago_tarjeta(300)
 
-    # Intentar operaciones con tarjeta inválida
+    # Tarjeta inválida
     cuenta_invalida = CuentaBancaria("Ana Gómez", "1234567890123456", 500)
-    cuenta_invalida.depositar(100)  # Debería mostrar un mensaje de error
+    cuenta_invalida.depositar(100) 
